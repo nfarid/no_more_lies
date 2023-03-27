@@ -1,6 +1,8 @@
 
+import Calender from "../components/Calender";
+
 export default function Index() {
-    return (
-        <p>This is the home page</p>
-    );
+    return (<>
+        <Calender/>
+    </>);
 }
