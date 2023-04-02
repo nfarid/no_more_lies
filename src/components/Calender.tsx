@@ -43,7 +43,7 @@ export default function Calender() : JSX.Element {
     weekLst.push(<tr key={weekLst.length}>{week}</tr>);
 
 
-    return(<>
+    return(<div>
         <Button type="button" onClick={decreaseMonth}>&lt;</Button>
         {monthName} {currentYear}
         <Button type="button" onClick={increaseMonth}>&gt;</Button>
@@ -72,5 +72,5 @@ export default function Calender() : JSX.Element {
             {weekLst}
         </tbody>
         </table>
-    </>);
+    </div>);
 }
