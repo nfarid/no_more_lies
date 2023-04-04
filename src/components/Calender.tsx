@@ -23,13 +23,13 @@ export default function Calender() : JSX.Element {
     const startWeekday : number = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
     for(let i : number = 0; i < startWeekday; ++i) {
         const key : number = weekLst.length * 10 + i;
-        week.push(<td key={key}><Button type="button" variant="secondary" disabled>"."</Button></td>);
+        week.push(<td key={key}><Button type="button" variant="dark" disabled>"."</Button></td>);
     }
     for(let i : number = 1; i <= numberOfDays; ++i) {
         const dateOfMonth : Date = new Date(month.getFullYear(), month.getMonth(), i);
         const weekDay : number = dateOfMonth.getDay();
         const key : number = weekLst.length * 10 + weekDay;
-        week.push(<td key={key}><Button type="button">{i < 10 ? "0"+i : i}</Button></td>);
+        week.push(<td key={key}><Button type="button" variant="light">{i < 10 ? "0"+i : i}</Button></td>);
         if(weekDay == 6) {
             weekLst.push(<tr key={weekLst.length}>{week}</tr>);
             week = [];
@@ -38,7 +38,7 @@ export default function Calender() : JSX.Element {
     const endWeekday : number = new Date(month.getFullYear(), month.getMonth(), numberOfDays).getDay();
     for(let i : number = endWeekday + 1; i < 7; ++i) {
         const key : number = weekLst.length * 10 + i;
-        week.push(<td key={key}><Button type="button" variant="secondary" disabled>"."</Button></td>);
+        week.push(<td key={key}><Button type="button" variant="dark" disabled>"."</Button></td>);
     }
     weekLst.push(<tr key={weekLst.length}>{week}</tr>);
 
