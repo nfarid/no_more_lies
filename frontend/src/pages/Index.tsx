@@ -5,9 +5,9 @@ import { Stack } from "react-bootstrap";
 
 export default function Index() {
     return (<>
-    <Stack direction="horizontal" gap={2}>
+        <Stack direction="horizontal" gap={2}>
             <Calender/>
             <TimePicker/>
-    </Stack>
+        </Stack>
     </>);
 }

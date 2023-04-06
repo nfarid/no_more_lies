@@ -7,10 +7,10 @@ export default function Calender() : JSX.Element {
     const [month, setMonth] = useState(new Date() );
     const decreaseMonth = ()=> {
         setMonth(new Date(month.getFullYear(), month.getMonth()-1, 1) );
-    }
+    };
     const increaseMonth = ()=> {
         setMonth(new Date(month.getFullYear(), month.getMonth()+1, 1) );
-    }
+    };
 
     //For JS Date, month is 0-indexed and day of month is 1-indexed but day of week is 0-indexed
     const numberOfDays : number = new Date(month.getFullYear(), month.getMonth()+1, 0).getDate();
@@ -21,11 +21,11 @@ export default function Calender() : JSX.Element {
     const weekLst : Array<JSX.Element> = [];
     let week : Array<JSX.Element> = [];
     const startWeekday : number = new Date(month.getFullYear(), month.getMonth(), 1).getDay();
-    for(let i : number = 0; i < startWeekday; ++i) {
+    for(let i  = 0; i < startWeekday; ++i) {
         const key : number = weekLst.length * 10 + i;
         week.push(<td key={key}><Button type="button" variant="dark" disabled>&nbsp;&nbsp;&nbsp;&nbsp;</Button></td>);
     }
-    for(let i : number = 1; i <= numberOfDays; ++i) {
+    for(let i  = 1; i <= numberOfDays; ++i) {
         const dateOfMonth : Date = new Date(month.getFullYear(), month.getMonth(), i);
         const weekDay : number = dateOfMonth.getDay();
         const key : number = weekLst.length * 10 + weekDay;
