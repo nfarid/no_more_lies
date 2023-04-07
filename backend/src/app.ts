@@ -1,12 +1,11 @@
 
 import express from "express";
 
+import indexRoute from "./routes/index.js";
+
 const app = express();
 
-
-app.get("/", (_, res)=>{
-    res.send("Hello from express and typescript\n");
-});
+app.use("/_api", indexRoute);
 
 const port = process.env.PORT || 3000;
 
