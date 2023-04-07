@@ -2,11 +2,11 @@
   "name": "gym-website-backend",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/app.js",
   "type": "module",
   "scripts": {
-    "dev": "tsc -w & nodemon dist/index.js",
-    "start": "node dist/index.js",
+    "dev": "tsc -w & nodemon dist/app.js",
+    "start": "node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
