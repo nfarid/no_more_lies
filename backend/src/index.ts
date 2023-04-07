@@ -4,7 +4,7 @@ import express from "express";
 const app = express();
 
 
-app.get("/", (req, res)=>{
+app.get("/", (_, res)=>{
     res.send("Hello from express and typescript\n");
 });
 
