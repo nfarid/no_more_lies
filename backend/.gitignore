@@ -131,3 +131,7 @@ dist
 
 #Output
 dist/
+
+#Misc
+.*
+!.eslintc.cjs
