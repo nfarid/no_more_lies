@@ -10,8 +10,12 @@ import userRouter from "./routes/user.js";
 
 const app = express();
 
+//req.body will be empty without this
+app.use(express.json() );
+app.use(express.urlencoded({extended: true}) );
+
 app.use("/_api", indexRoute);
-app.use("/_api/user", userRouter);
+app.use("/_api/users", userRouter);
 
 const port = process.env.PORT || 3000;
 
