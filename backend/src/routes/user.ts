@@ -1,10 +1,10 @@
 
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, } from "express";
 const userRouter = express.Router();
 
 import {Schema, checkSchema, validationResult} from "express-validator";
 
-import pool from "../db/pool.js";
+import {createAccount} from "../db/account.js";
 
 const formSchema = {
     "user-email": {
@@ -24,7 +24,7 @@ const validateSchema : Schema = {
             errorMessage: "Email is required",
         },
         isEmail: {
-            errorMessage: "Email must be a valid email",
+            errorMessage: "Email must be in a valid email format",
         }
     },
     "user-password": {
@@ -42,22 +42,46 @@ const validateSchema : Schema = {
     }
 };
 
-userRouter.get("/new", (_, res, next)=> {
+function createErrorMap(req: Request) {
+    const validationErrors = validationResult(req);
+    if(validationErrors.isEmpty() )
+        return null;
+    const errorMp : Record<string, Array<string> > = {};
+    for(const err of validationErrors.array() ) {
+        const [k,v] = [err.param, String(err.msg)];
+        if(! (k in errorMp) )
+            errorMp[k] = [];
+        errorMp[k].push(v);
+    }
+    return errorMp;
+}
+
+//New user action
+userRouter.get("/new", (_, res)=> {
     res.json(formSchema);
 });
 
-
-userRouter.post("/new", 
+//Create user action
+userRouter.post("/",
     checkSchema(validateSchema),
-    (req: Request, res: Response, next: NextFunction)=> {
-        const err = validationResult(req);
-        if(!err.isEmpty() )
-            return res.status(422).json({ errors: err.array() }); //error 422: Unprocessable Content
-        
-        //TODO: Create account
-
-
-        res.json({});
-    });
+    async (req: Request, res: Response)=> {
+        const errMp = createErrorMap(req);
+        if(errMp) {
+            console.error(errMp);
+            return res.status(422).json({errors: errMp}); //http 422: Unprocessable Content
+        }
+        try {
+            const email = req.body["user-email"];
+            const password = req.body["user-password"];
+            const id = await createAccount(email, password);
+            res.status(201).json({id: id}); //http 201: Created
+        } catch(err: any) {
+            console.error(err);
+            if(err.code == "23505") //postgres 23505: unique key violation
+                res.status(409).send({"user-email": "User already exist"}); //http 409: Conflict
+            else
+                res.status(500).send({"misc": "Unknown Database Error", code: err.code}); //http 500: Internal Server Error
+        }
+    } );
 
 export default userRouter;
