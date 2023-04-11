@@ -3,8 +3,6 @@
 import pg from "pg";
 const { Pool } = pg;
 
-console.log("process.env.PG_USER");
-console.log(process.env.PG_USER);
 const dbPool = new Pool({
     host: process.env.PG_HOST,
     port: parseInt(process.env.PG_PORT || ""),
