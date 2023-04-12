@@ -4,6 +4,7 @@ import "dotenv/config";
 import express, {Request, Response, NextFunction} from "express";
 
 import indexRoute from "./routes/index.js";
+import sessionRoute from "./routes/session.js";
 import userRouter from "./routes/user.js";
 
 import expressSession from "express-session";
@@ -12,6 +13,7 @@ import pool from "./db/pool.js";
 
 const app = express();
 
+const oneDay = 24 * 60 * 60 * 1000; //a day in milliseconds
 const PostgresqlStore = connectPgSimple(expressSession);
 const sessionStore = new PostgresqlStore({pool});
 //TODO: Change these options
@@ -21,6 +23,7 @@ const sessionOptions : expressSession.SessionOptions = {
         path: "/",
         httpOnly: true,
         secure: false,
+        maxAge: oneDay,
     },
     resave: false,
     saveUninitialized: false,
@@ -36,6 +39,7 @@ app.use(express.urlencoded({extended: true}) );
 
 app.use("/_api", indexRoute);
 app.use("/_api/users", userRouter);
+app.use("/_api/sessions", sessionRoute);
 
 app.use( (err: Error, req : Request, res : Response, _: NextFunction) => {
     console.error(err.stack);
