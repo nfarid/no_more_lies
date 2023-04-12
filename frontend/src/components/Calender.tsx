@@ -1,5 +1,5 @@
 
-import { Button, Container, Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -43,35 +43,29 @@ export default function Calender() : JSX.Element {
     weekLst.push(<tr key={weekLst.length}>{week}</tr>);
 
 
-    return(<Container style={{width: "min-content", border: "1px solid grey"}}>
-        <Row>
-            <Col>
-                <Button type="button" onClick={decreaseMonth}>&lt;</Button>
-            </Col>
-            <Col style={{flexGrow: "4"}}>
-                <p>{monthName} {currentYear}</p>
-            </Col>
-            <Col>
-                <Button type="button" onClick={increaseMonth}>&gt;</Button>
-            </Col>
-        </Row>
-        <Row>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Sun</th>
-                        <th scope="col">Mon</th>
-                        <th scope="col">Tue</th>
-                        <th scope="col">Wed</th>
-                        <th scope="col">Thu</th>
-                        <th scope="col">Fri</th>
-                        <th scope="col">Sat</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {weekLst}
-                </tbody>
-            </table>
-        </Row>
-    </Container>);
+    return(<div style={{border: "2px solid gray", padding: "4px", width: "max-content"}}>
+        <table style={{captionSide: "top"}}>
+            <caption style={{color: "white"}}>
+                <span style={{display: "flex", justifyContent: "space-between"}}>
+                    <Button type="button" onClick={decreaseMonth} style={{marginLeft: "8px"}}>&lt;</Button>
+                    {monthName} {currentYear}
+                    <Button type="button" onClick={increaseMonth} style={{marginRight: "8px"}}>&gt;</Button>
+                </span>
+            </caption>
+            <thead>
+                <tr>
+                    <th scope="col">Sun</th>
+                    <th scope="col">Mon</th>
+                    <th scope="col">Tue</th>
+                    <th scope="col">Wed</th>
+                    <th scope="col">Thu</th>
+                    <th scope="col">Fri</th>
+                    <th scope="col">Sat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {weekLst}
+            </tbody>
+        </table>
+    </div>);
 }
