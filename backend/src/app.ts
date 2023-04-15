@@ -4,6 +4,7 @@ import "dotenv/config";
 import express, {Request, Response, NextFunction} from "express";
 
 import indexRoute from "./routes/index.js";
+import bookingRoute from "./routes/booking.js";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json() );
 app.use(express.urlencoded({extended: true}) );
 
 app.use("/_api", indexRoute);
+app.use("/_api/bookings", bookingRoute);
 
 app.use( (err: Error, _req : Request, res : Response, _next: NextFunction) => {
     console.error(err.stack);
