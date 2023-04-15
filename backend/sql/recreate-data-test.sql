@@ -1,7 +1,7 @@
 
---Recreating the test data
 
 TRUNCATE TABLE Availables;
+TRUNCATE TABLE Reservations;
 
 
 --Recreating the test data
@@ -75,4 +75,12 @@ INSERT INTO Availables(slot) VALUES
     ('2023-06-16 15:00'),
     ('2023-06-16 16:30'),
     ('2023-06-16 18:00')
+;
+
+
+INSERT INTO Reservations(slot, email) VALUES
+    ('2023-04-27 10:00', 'foo@example.com'),
+    ('2023-04-28 11:30', 'bar@example.com'),
+    ('2023-04-29 12:00', 'qux@example.com'),
+    ('2023-04-30 13:30', 'wumbo@example.com')
 ;
