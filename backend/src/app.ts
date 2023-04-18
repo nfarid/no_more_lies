@@ -2,11 +2,14 @@
 
 import "dotenv/config";
 import express, {Request, Response, NextFunction} from "express";
+import cors from "cors";
 
 import indexRoute from "./routes/index.js";
 import bookingRoute from "./routes/booking.js";
 
 const app = express();
+
+app.use(cors({origin: process.env.FRONTEND_ORIGIN}) );
 
 
 //req.body will be empty without this
