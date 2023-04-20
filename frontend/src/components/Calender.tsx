@@ -2,14 +2,23 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import type { v4 } from "uuid";
+import type { Times } from "./TimePicker";
 
-export default function Calender() : JSX.Element {
-    const [month, setMonth] = useState(new Date() );
+export type V4 = typeof v4;
+export type Availables = {monthYear: Date, days: {date: Date, times: {id: V4, slot: Date}[] }[] }[];
+
+export default function Calender({slotLst, setDay} : {slotLst: Availables, setDay: (time: Times) => () => void}) : JSX.Element {
+    if(slotLst.length == 0)
+        return <p>No available slots</p>;
+
+    const [monthIndex, setMonthIndex] = useState<number>(0);
+    const month = slotLst[monthIndex].monthYear;
     const decreaseMonth = ()=> {
-        setMonth(new Date(month.getFullYear(), month.getMonth()-1, 1) );
+        setMonthIndex( (monthIndex-1+slotLst.length) % slotLst.length);
     };
     const increaseMonth = ()=> {
-        setMonth(new Date(month.getFullYear(), month.getMonth()+1, 1) );
+        setMonthIndex( (monthIndex+1) % slotLst.length);
     };
 
     //For JS Date, month is 0-indexed and day of month is 1-indexed but day of week is 0-indexed
@@ -25,11 +34,23 @@ export default function Calender() : JSX.Element {
         const key : number = weekLst.length * 10 + i;
         week.push(<td key={key}><Button type="button" variant="dark" disabled>&nbsp;&nbsp;&nbsp;&nbsp;</Button></td>);
     }
+    let dayIndex = 0;
     for(let i  = 1; i <= numberOfDays; ++i) {
+        let variant = "secondary";
+        let disabled = true;
+        let onClick = undefined;
+        if(slotLst[monthIndex].days[dayIndex].date.getDate() == i) {
+            console.log(i);
+            disabled = false;
+            variant = "light";
+            dayIndex = (dayIndex+1) % slotLst[monthIndex].days.length;
+            onClick = setDay(slotLst[monthIndex].days[dayIndex].times);
+        }
+
         const dateOfMonth : Date = new Date(month.getFullYear(), month.getMonth(), i);
         const weekDay : number = dateOfMonth.getDay();
         const key : number = weekLst.length * 10 + weekDay;
-        week.push(<td key={key}><Button type="button" variant="light">{i < 10 ? "0"+i : i}</Button></td>);
+        week.push(<td key={key}><Button type="button" variant={variant} disabled={disabled} onClick={onClick}>{i < 10 ? "0"+i : i}</Button></td>);
         if(weekDay == 6) {
             weekLst.push(<tr key={weekLst.length}>{week}</tr>);
             week = [];

@@ -1,13 +1,36 @@
+import { useEffect, useState } from "react";
+import Calender, {Availables, V4} from "./Calender";
+import TimePicker, {Times} from "./TimePicker";
 
 export default function BookingForm() : JSX.Element {
-    fetch("http://localhost:3000/_api/bookings")
-        .then(res=> res.json() )
-        .then(json=> console.log(json) )
-        .catch(err=> console.log(err) );
-    return(<form>
+    const [slotLst, setSlotLst] = useState<Availables>([]);
+    const [timeLst, setTimeLst] = useState<Times>([]);
+    const [timeSlot, setTimeSlot] = useState<V4 | null>(null);
+    useEffect(()=>{
+        fetch("http://localhost:3000/_api/bookings")
+            .then(res=> res.json() )
+            .then(lst=> {
+                for(const month of lst) {
+                    month.monthYear = new Date(month.monthYear);
+                    for(const day of month.days) {
+                        day.date = new Date(day.date);
+                        for(const time of day.times)
+                            time.slot = new Date(time.slot);
+                    }
+                }
+                setSlotLst(lst);
+            }).catch(err=> console.error(err) );
+    },[]);
+    const setDay = (time: Times) => () => setTimeLst(time);
+
+    return(<form action="http://localhost:3000/_api/bookings/" method="POST">
         <label>
             Email:
             <input type="email" placeholder="foo@bar.com" name="booking-email" id="booking-email" required></input>
         </label>
+        <Calender slotLst={slotLst} setDay={setDay}/>
+        <TimePicker timeLst={timeLst} setTimeSlot={setTimeSlot}/>
+        {timeSlot? <input type="hidden" name="booking-id" value={timeSlot.toString()}/> : ""}
+        {timeSlot? <input type="submit"/> : ""}
     </form>);
 }
