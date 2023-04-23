@@ -1,6 +1,8 @@
 
 import dbPool from "./pool.js";
+import { testAccount, emailTransporter } from "../misc/email.js";
 
+import nodemailer from "nodemailer";
 import type { v4 } from "uuid";
 //Default postgres uuid type is v4: https://www.postgresql.org/docs/current/functions-uuid.html
 
@@ -51,6 +53,16 @@ export async function bookSlot(id: V4, email: string) {
         const slot = deleteResult.rows[0].slot as Date;
 
         await dbClient.query("INSERT INTO Reservations (slot,email) VALUES ($1, $2);", [slot, email]);
+
+        const info = await emailTransporter.sendMail({
+            from: testAccount.user,
+            to: email,
+            subject: "Booked Slot",
+            text: `Your slot at time ${slot} has been booked!`,
+        });
+        // Preview only available when sending through an Ethereal account (so remove eventually)
+        console.log("Message sent: %s", info.messageId);
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info) );
 
         await dbClient.query("COMMIT");
     } catch(err: any) {
