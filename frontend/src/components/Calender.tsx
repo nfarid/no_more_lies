@@ -9,6 +9,7 @@ export default function Calender({slotLst, setDay} : {slotLst: Availables, setDa
     if(slotLst.length == 0)
         return <p>No available slots</p>;
 
+    const [clickedDate, setClickedDate] = useState<number>(0);
     const [monthIndex, setMonthIndex] = useState<number>(0);
     const month = slotLst[monthIndex].monthYear;
     const decreaseMonth = ()=> {
@@ -40,8 +41,10 @@ export default function Calender({slotLst, setDay} : {slotLst: Availables, setDa
             console.log(i);
             disabled = false;
             variant = "light";
+            if(i === clickedDate)
+                variant = "primary";
             dayIndex = (dayIndex+1) % slotLst[monthIndex].days.length;
-            onClick = setDay(slotLst[monthIndex].days[dayIndex].times);
+            onClick = ()=> {setClickedDate(i); setDay(slotLst[monthIndex].days[dayIndex].times)();};
         }
 
         const dateOfMonth : Date = new Date(month.getFullYear(), month.getMonth(), i);
