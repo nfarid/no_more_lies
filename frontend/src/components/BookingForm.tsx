@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import Calender, {Availables, V4} from "./Calender";
-import TimePicker, {Times} from "./TimePicker";
+import Calender from "./Calender";
+import TimePicker from "./TimePicker";
+import { Availables, Times, V4 } from "./types";
 
 export default function BookingForm() : JSX.Element {
     const [slotLst, setSlotLst] = useState<Availables>([]);

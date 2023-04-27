@@ -2,11 +2,8 @@
 import { Button } from "react-bootstrap";
 import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import type { v4 } from "uuid";
-import type { Times } from "./TimePicker";
+import type { Availables, Times } from "./types";
 
-export type V4 = typeof v4;
-export type Availables = {monthYear: Date, days: {date: Date, times: {id: V4, slot: Date}[] }[] }[];
 
 export default function Calender({slotLst, setDay} : {slotLst: Availables, setDay: (time: Times) => () => void}) : JSX.Element {
     if(slotLst.length == 0)

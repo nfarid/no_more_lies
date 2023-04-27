@@ -1,9 +1,7 @@
 
 import { Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {V4} from "./Calender";
-
-export type Times = {id: V4, slot: Date}[];
+import {V4} from "./types";
 
 export default function TimePicker({timeLst, setTimeSlot}: {timeLst: Times, setTimeSlot: React.Dispatch<React.SetStateAction<V4 | null>>}) : JSX.Element {
     
