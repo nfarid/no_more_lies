@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Calender from "./Calender";
 import TimePicker from "./TimePicker";
 import { Availables, Times, V4 } from "./types";
+import { Col, Container, Row } from "react-bootstrap";
 
 export default function BookingForm() : JSX.Element {
     const [slotLst, setSlotLst] = useState<Availables>([]);
@@ -24,14 +25,28 @@ export default function BookingForm() : JSX.Element {
     },[]);
     const setDay = (time: Times) => () => setTimeLst(time);
 
-    return(<form action="http://localhost:3000/_api/bookings/" method="POST">
-        <label>
-            Email:
-            <input type="email" placeholder="foo@bar.com" name="booking-email" id="booking-email" required></input>
-        </label>
-        <Calender slotLst={slotLst} setDay={setDay}/>
-        <TimePicker timeLst={timeLst} setTimeSlot={setTimeSlot}/>
-        {timeSlot? <input type="hidden" name="booking-id" value={timeSlot.toString()}/> : ""}
-        {timeSlot? <input type="submit"/> : ""}
-    </form>);
+    return(<Container>
+        <form action="http://localhost:3000/_api/bookings/" method="POST">
+            <br/>
+            <Row>
+                <p>Do you want to  train?</p>
+            </Row>
+            <Row>
+                <label>
+                    Drop email below:
+                    <br/>
+                    <input type="email" placeholder="foo@bar.com" name="booking-email" id="booking-email" required></input>
+                </label>
+            </Row>
+            <br/>
+            <Row>
+                <Col><Calender slotLst={slotLst} setDay={setDay}/></Col>
+                <Col><TimePicker timeLst={timeLst} setTimeSlot={setTimeSlot}/></Col>
+            </Row>
+            {timeSlot? <input type="hidden" name="booking-id" value={timeSlot.toString()}/> : ""}
+            <Row>
+                {timeSlot? <input type="submit" onClick={()=> confirm("Are you sure?")}/> : ""}
+            </Row>
+        </form>
+    </Container>);
 }
